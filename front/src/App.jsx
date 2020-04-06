@@ -3,9 +3,9 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import teal from "@material-ui/core/colors/teal";
 import cyan from "@material-ui/core/colors/cyan";
+import { BrowserRouter as Router } from "react-router-dom";
 
-import Intro from "./Slides/Intro";
-import Bio from "./Slides/Bio";
+import Slides from "./Slides";
 
 const theme = createMuiTheme({
   palette: {
@@ -51,8 +51,9 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Intro />
-      <Bio />
+      <Router>
+        <Slides />
+      </Router>
     </ThemeProvider>
   );
 };

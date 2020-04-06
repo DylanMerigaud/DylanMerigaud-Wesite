@@ -1,9 +1,13 @@
 import React from "react";
 
-import Slide from "./Utils/Slide";
+import Slide from "./Components/Slide";
 
-const Bio = () => {
-  return <Slide>Bio</Slide>;
-};
+const Bio = React.forwardRef(({ ...restProps }, ref) => {
+  return (
+    <Slide ref={ref} {...restProps}>
+      Bio
+    </Slide>
+  );
+});
 
 export default Bio;

@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import { makeStyles } from "@material-ui/core/styles";
 import { Keyframes } from "react-spring/renderprops";
 import { config } from "react-spring";
 
-import Slide from "./Utils/Slide";
+import Slide from "./Components/Slide";
 
 const useStyles = makeStyles({
   arrowTipsScroll: {
@@ -35,17 +35,20 @@ const ArrowTipsAimationScroll = Keyframes.Spring({
   },
 });
 
-const Intro = () => {
+const Intro = React.forwardRef(({ ...restProps }, ref) => {
   const classes = useStyles();
   const [stateArrowTipsScroll, setStateArrowTipsScroll] = useState(
     ArrowTipsAimationScrollStates.HIDDEN
   );
+  const userDidScroll = useRef(false);
   useEffect(() => {
     const showTimeout = setTimeout(() => {
-      setStateArrowTipsScroll(ArrowTipsAimationScrollStates.SHOWN);
+      if (!userDidScroll.current)
+        setStateArrowTipsScroll(ArrowTipsAimationScrollStates.SHOWN);
     }, 3000);
     const wiggleTimeout = setTimeout(() => {
-      setStateArrowTipsScroll(ArrowTipsAimationScrollStates.WIGGLE);
+      if (!userDidScroll.current)
+        setStateArrowTipsScroll(ArrowTipsAimationScrollStates.WIGGLE);
     }, 10000);
     return () => {
       clearTimeout(showTimeout);
@@ -55,14 +58,16 @@ const Intro = () => {
   useEffect(() => {
     const scrollCb = () => {
       setStateArrowTipsScroll(ArrowTipsAimationScrollStates.HIDDEN);
-      window.removeEventListener("scroll", scrollCb);
+      userDidScroll.current = true;
+      window.removeEventListener("scroll", scrollCb, { passive: true });
     };
-    window.addEventListener("scroll", scrollCb);
-    return () => window.removeEventListener("scroll", scrollCb);
+    window.addEventListener("scroll", scrollCb, { passive: true });
+    return () =>
+      window.removeEventListener("scroll", scrollCb, { passive: true });
   });
 
   return (
-    <Slide>
+    <Slide ref={ref} {...restProps}>
       <div>Intro</div>
       <ArrowTipsAimationScroll state={stateArrowTipsScroll}>
         {(styleProps) => (
@@ -74,6 +79,6 @@ const Intro = () => {
       </ArrowTipsAimationScroll>
     </Slide>
   );
-};
+});
 
 export default Intro;

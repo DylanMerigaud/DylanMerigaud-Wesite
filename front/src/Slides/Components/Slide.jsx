@@ -11,9 +11,15 @@ const useStyles = makeStyles({
   },
 });
 
-const Slide = ({ className, ...restProps }) => {
+const Slide = React.forwardRef(({ className, ...restProps }, ref) => {
   const classes = useStyles();
-  return <div className={classnames(className, classes.root)} {...restProps} />;
-};
+  return (
+    <div
+      className={classnames(className, classes.root)}
+      {...restProps}
+      ref={ref}
+    />
+  );
+});
 
 export default Slide;
