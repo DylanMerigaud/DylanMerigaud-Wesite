@@ -44,7 +44,8 @@ const theme = createMuiTheme({
   },
 });
 
-if (process.env.NODE_ENV === "development") console.log(theme);
+if (process.env.NODE_ENV === "development")
+  console.log("Looking for the Material-UI theme ? Here you go !", theme);
 
 const App = () => {
   return (
