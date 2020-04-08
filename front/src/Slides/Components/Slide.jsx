@@ -4,7 +4,9 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   root: {
-    width: "100%",
+    width: "calc(100% - 30px)",
+    marginLeft: 15,
+    marginRight: 15,
     minHeight: "100vh",
     display: "flex",
     flexDirection: "column",
