@@ -6,6 +6,7 @@ import cyan from "@material-ui/core/colors/cyan";
 import { BrowserRouter as Router } from "react-router-dom";
 
 import Slides from "./Slides";
+import EasterEggs from "./EasterEggs";
 
 const theme = createMuiTheme({
   palette: {
@@ -53,6 +54,7 @@ const App = () => {
       <CssBaseline />
       <Router>
         <Slides />
+        <EasterEggs />
       </Router>
     </ThemeProvider>
   );

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import ArrowDownward from "@material-ui/icons/ArrowDownward";
+import ArrowDropDownCircleTwoToneIcon from "@material-ui/icons/ArrowDropDownCircleTwoTone";
 import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
@@ -16,6 +16,9 @@ const useStyles = makeStyles({
     marginBottom: 10,
     alignSelf: "center",
     fontSize: 40,
+    "& path:first-child": {
+      fill: "white",
+    },
   },
 });
 
@@ -95,13 +98,13 @@ const Intro = React.forwardRef(({ ...restProps }, ref) => {
         Bienvenue sur mon site !
       </Typography>
       <img
-        src={"/kiff_ta_patate.jpg"}
+        src={process.env.PUBLIC_URL + "/kiff_ta_patate.jpg"}
         alt={"Moi qui embrasse un pied de patate"}
       />
       <ArrowTipsAimationScroll state={stateArrowTipsScroll}>
         {(styleProps) => (
           <Tooltip placement="top" title="You can scroll to view more">
-            <ArrowDownward
+            <ArrowDropDownCircleTwoToneIcon
               onMouseEnter={onMouseEnterArrowScrollTip}
               className={classes.arrowTipsScroll}
               style={styleProps}
