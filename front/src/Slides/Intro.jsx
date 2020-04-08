@@ -1,5 +1,7 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
+import Tooltip from "@material-ui/core/Tooltip";
+import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { Keyframes } from "react-spring/renderprops";
 import { config } from "react-spring";
@@ -8,6 +10,8 @@ import Slide from "./Components/Slide";
 
 const useStyles = makeStyles({
   arrowTipsScroll: {
+    position: "fixed",
+    bottom: 0,
     marginTop: "auto",
     marginBottom: 10,
     alignSelf: "center",
@@ -17,15 +21,19 @@ const useStyles = makeStyles({
 
 const ArrowTipsAimationScrollStates = {
   HIDDEN: "hidden",
-  SHOWN: "shown",
+  STILL: "still",
   WIGGLE: "wiggle",
 };
 
 const ArrowTipsAimationScroll = Keyframes.Spring({
-  [ArrowTipsAimationScrollStates.HIDDEN]: { opacity: 0 },
-  [ArrowTipsAimationScrollStates.SHOWN]: {
+  [ArrowTipsAimationScrollStates.HIDDEN]: {
+    opacity: 0,
+    transform: "translate(0px, 0px)",
+  },
+  [ArrowTipsAimationScrollStates.STILL]: {
     opacity: 1,
     config: config.molasses,
+    transform: "translate(0px, 0px)",
   },
   [ArrowTipsAimationScrollStates.WIGGLE]: async (next, cancel, ownProps) => {
     while (true) {
@@ -41,14 +49,15 @@ const Intro = React.forwardRef(({ ...restProps }, ref) => {
     ArrowTipsAimationScrollStates.HIDDEN
   );
   const userDidScroll = useRef(false);
+  const userDidHoverArrowTips = useRef(false);
   useEffect(() => {
     if (window.scrollY > 0) return undefined;
     const showTimeout = setTimeout(() => {
       if (!userDidScroll.current)
-        setStateArrowTipsScroll(ArrowTipsAimationScrollStates.SHOWN);
+        setStateArrowTipsScroll(ArrowTipsAimationScrollStates.STILL);
     }, 3000);
     const wiggleTimeout = setTimeout(() => {
-      if (!userDidScroll.current)
+      if (!userDidScroll.current && !userDidHoverArrowTips.current)
         setStateArrowTipsScroll(ArrowTipsAimationScrollStates.WIGGLE);
     }, 10000);
     return () => {
@@ -66,16 +75,38 @@ const Intro = React.forwardRef(({ ...restProps }, ref) => {
     return () =>
       window.removeEventListener("scroll", scrollCb, { passive: true });
   });
+  const onMouseEnterArrowScrollTip = useCallback(() => {
+    userDidHoverArrowTips.current = true;
+    if (stateArrowTipsScroll === ArrowTipsAimationScrollStates.WIGGLE)
+      setStateArrowTipsScroll(ArrowTipsAimationScrollStates.STILL);
+  }, [stateArrowTipsScroll]);
 
   return (
     <Slide ref={ref} {...restProps}>
-      <div>Intro</div>
+      <Typography variant="h1" gutterBottom>
+        Dylan
+        <br />
+        Merigaud
+      </Typography>
+      <Typography variant="h2" gutterBottom>
+        Intro
+      </Typography>
+      <Typography variant="body1" gutterBottom>
+        Bienvenue sur mon site !
+      </Typography>
+      <img
+        src={"/kiff_ta_patate.jpg"}
+        alt={"Moi qui embrasse un pied de patate"}
+      />
       <ArrowTipsAimationScroll state={stateArrowTipsScroll}>
         {(styleProps) => (
-          <ArrowDownward
-            className={classes.arrowTipsScroll}
-            style={styleProps}
-          />
+          <Tooltip placement="top" title="You can scroll to view more">
+            <ArrowDownward
+              onMouseEnter={onMouseEnterArrowScrollTip}
+              className={classes.arrowTipsScroll}
+              style={styleProps}
+            />
+          </Tooltip>
         )}
       </ArrowTipsAimationScroll>
     </Slide>
