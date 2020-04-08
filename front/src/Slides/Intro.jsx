@@ -3,13 +3,21 @@ import ArrowDropDownCircleTwoToneIcon from "@material-ui/icons/ArrowDropDownCirc
 import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { Keyframes } from "react-spring/renderprops";
 import { config } from "react-spring";
 import { useTranslation } from "react-i18next";
 
 import Slide from "./Components/Slide";
+import useRefreshOnResize from "../hooks/useRefreshOnResize";
 
 const useStyles = makeStyles({
+  slide: {
+    backgroundImage: `url("${process.env.PUBLIC_URL}/kiff_ta_patate.jpg")`,
+    backgroundPosition: "center",
+    backgroundSize: "cover",
+    color: "white",
+  },
   arrowTipsScroll: {
     position: "fixed",
     bottom: 0,
@@ -49,7 +57,7 @@ const ArrowTipsAimationScroll = Keyframes.Spring({
 
 const Intro = React.forwardRef(({ ...restProps }, ref) => {
   const classes = useStyles();
-  const { t } = useTranslation();
+  const { t } = useTranslation(["slides"]);
   const [stateArrowTipsScroll, setStateArrowTipsScroll] = useState(
     ArrowTipsAimationScrollStates.HIDDEN
   );
@@ -86,23 +94,29 @@ const Intro = React.forwardRef(({ ...restProps }, ref) => {
       setStateArrowTipsScroll(ArrowTipsAimationScrollStates.STILL);
   }, [stateArrowTipsScroll]);
 
+  const isSmallDevice = !useMediaQuery((theme) => theme.breakpoints.up("md"));
+  useRefreshOnResize();
   return (
-    <Slide ref={ref} {...restProps}>
-      <Typography variant="h1" gutterBottom>
+    <Slide ref={ref} className={classes.slide} {...restProps}>
+      <Typography
+        variant={isSmallDevice ? "h2" : "h1"}
+        component="h1"
+        gutterBottom
+      >
         Dylan
         <br />
         Merigaud
       </Typography>
-      <Typography variant="h2" gutterBottom>
+      <Typography
+        variant={isSmallDevice ? "h3" : "h2"}
+        component="h2"
+        gutterBottom
+      >
         {t("slides:intro_title")}
       </Typography>
       <Typography variant="body1" gutterBottom>
         {t("slides:intro_body")}
       </Typography>
-      <img
-        src={process.env.PUBLIC_URL + "/kiff_ta_patate.jpg"}
-        alt={"Moi qui embrasse un pied de patate"}
-      />
       <ArrowTipsAimationScroll state={stateArrowTipsScroll}>
         {(styleProps) => (
           <Tooltip placement="top" title="You can scroll to view more">

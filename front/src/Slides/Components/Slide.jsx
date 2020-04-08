@@ -4,9 +4,8 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   root: {
-    width: "calc(100% - 30px)",
-    marginLeft: 15,
-    marginRight: 15,
+    width: "100%",
+    padding: "0px 15px",
     minHeight: "100vh",
     display: "flex",
     flexDirection: "column",
@@ -17,7 +16,7 @@ const Slide = React.forwardRef(({ className, ...restProps }, ref) => {
   const classes = useStyles();
   return (
     <div
-      className={classnames(className, classes.root)}
+      className={classnames(classes.root, className)}
       {...restProps}
       ref={ref}
     />
