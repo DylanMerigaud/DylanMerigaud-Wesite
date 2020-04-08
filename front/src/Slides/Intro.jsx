@@ -42,6 +42,7 @@ const Intro = React.forwardRef(({ ...restProps }, ref) => {
   );
   const userDidScroll = useRef(false);
   useEffect(() => {
+    if (window.scrollY > 0) return undefined;
     const showTimeout = setTimeout(() => {
       if (!userDidScroll.current)
         setStateArrowTipsScroll(ArrowTipsAimationScrollStates.SHOWN);
