@@ -5,6 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { Keyframes } from "react-spring/renderprops";
 import { config } from "react-spring";
+import { useTranslation } from "react-i18next";
 
 import Slide from "./Components/Slide";
 
@@ -48,6 +49,7 @@ const ArrowTipsAimationScroll = Keyframes.Spring({
 
 const Intro = React.forwardRef(({ ...restProps }, ref) => {
   const classes = useStyles();
+  const { t } = useTranslation();
   const [stateArrowTipsScroll, setStateArrowTipsScroll] = useState(
     ArrowTipsAimationScrollStates.HIDDEN
   );
@@ -92,10 +94,10 @@ const Intro = React.forwardRef(({ ...restProps }, ref) => {
         Merigaud
       </Typography>
       <Typography variant="h2" gutterBottom>
-        Intro
+        {t("slides:intro_title")}
       </Typography>
       <Typography variant="body1" gutterBottom>
-        Bienvenue sur mon site !
+        {t("slides:intro_body")}
       </Typography>
       <img
         src={process.env.PUBLIC_URL + "/kiff_ta_patate.jpg"}
